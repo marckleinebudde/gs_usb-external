@@ -25,6 +25,8 @@
 #include <linux/can/dev.h>
 #include <linux/can/error.h>
 
+#include <compat/can/compat.h>
+
 /* Device specific constants */
 #define USB_GS_USB_1_VENDOR_ID 0x1d50
 #define USB_GS_USB_1_PRODUCT_ID 0x606f
