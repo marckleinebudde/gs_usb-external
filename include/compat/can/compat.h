@@ -14,6 +14,7 @@
 #include <linux/regmap.h>
 #include <linux/version.h>
 
+#include <compat/can/dev.h>
 #include <compat/can/rx-offload.h>
 
 #ifndef static_assert
