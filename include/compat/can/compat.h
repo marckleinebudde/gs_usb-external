@@ -319,7 +319,7 @@ static inline unsigned int can_skb_get_frame_len(const struct sk_buff *skb)
 	return 0;
 }
 
-#endif /* < v5.13.0 */
+#endif /* < v5.12.0 */
 
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 0) && \
@@ -332,6 +332,6 @@ can_rx_offload_queue_timestamp(struct can_rx_offload *offload,
 	return can_rx_offload_queue_sorted(offload, skb, timestamp);
 }
 
-#endif /* < v5.18.0 && >= v5.12.0 */
+#endif /* < v5.19.0 && >= v5.12.0 */
 
 #endif
