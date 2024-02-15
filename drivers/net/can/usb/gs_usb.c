@@ -1071,7 +1071,7 @@ static const struct ethtool_ops gs_usb_ethtool_ops = {
 	.get_ts_info = gs_usb_get_ts_info,
 };
 
-static int gs_usb_get_termination(struct net_device *netdev, u16 *term)
+static int __maybe_unused gs_usb_get_termination(struct net_device *netdev, u16 *term)
 {
 	struct gs_can *dev = netdev_priv(netdev);
 	struct gs_device_termination_state term_state;
@@ -1094,7 +1094,7 @@ static int gs_usb_get_termination(struct net_device *netdev, u16 *term)
 	return 0;
 }
 
-static int gs_usb_set_termination(struct net_device *netdev, u16 term)
+static int __maybe_unused gs_usb_set_termination(struct net_device *netdev, u16 term)
 {
 	struct gs_can *dev = netdev_priv(netdev);
 	struct gs_device_termination_state term_state;
@@ -1211,6 +1211,7 @@ static struct gs_can *gs_make_candev(unsigned int channel,
 		dev->can.do_set_data_bittiming = gs_usb_set_data_bittiming;
 	}
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0)
 	if (feature & GS_CAN_FEATURE_TERMINATION) {
 		rc = gs_usb_get_termination(netdev, &dev->can.termination);
 		if (rc) {
@@ -1225,6 +1226,7 @@ static struct gs_can *gs_make_candev(unsigned int channel,
 			dev->can.do_set_termination = gs_usb_set_termination;
 		}
 	}
+#endif
 
 	/* The CANtact Pro from LinkLayer Labs is based on the
 	 * LPC54616 µC, which is affected by the NXP LPC USB transfer
