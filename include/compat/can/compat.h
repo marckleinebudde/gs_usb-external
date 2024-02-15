@@ -309,6 +309,34 @@ can_put_echo_skb_compat(struct sk_buff *skb, struct net_device *dev,
 #define __can_get_echo_skb(_dev, _idx, _len_ptr, _frame_len_ptr) \
 	__can_get_echo_skb((_dev), (_idx), (_len_ptr))
 
+static inline
+unsigned int can_get_echo_skb_compat(struct net_device *dev, unsigned int idx,
+				     unsigned int *frame_len_ptr)
+{
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0)
+	return can_get_echo_skb(dev, idx);
+#else
+	return can_get_echo_skb(dev, idx, frame_len_ptr);
+#endif /* < v5.10.0 */
+}
+
+#define can_get_echo_skb(_dev, _idx, _frame_len_ptr) \
+	can_get_echo_skb_compat(_dev, _idx, _frame_len_ptr)
+
+static inline
+void can_free_echo_skb_compat(struct net_device *dev, unsigned int idx,
+			      unsigned int *frame_len_ptr)
+{
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0)
+	return can_free_echo_skb(dev, idx);
+#else
+	return can_free_echo_skb(dev, idx, frame_len_ptr);
+#endif /* < v5.10.0 */
+}
+
+#define can_free_echo_skb(_dev, _idx, _frame_len_ptr) \
+	can_free_echo_skb_compat(_dev, _idx, _frame_len_ptr)
+
 static inline u8 canfd_sanitize_len(u8 len)
 {
 	return can_fd_dlc2len(can_fd_len2dlc(len));
