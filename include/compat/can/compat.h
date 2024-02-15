@@ -166,48 +166,6 @@ static inline bool __must_check __must_check_overflow(bool overflow)
 	__must_check_overflow(__builtin_add_overflow(a, b, d))
 #endif
 
-#ifndef size_add
-/**
- * size_add() - Calculate size_t addition with saturation at SIZE_MAX
- * @addend1: first addend
- * @addend2: second addend
- *
- * Returns: calculate @addend1 + @addend2, both promoted to size_t,
- * with any overflow causing the return value to be SIZE_MAX. The
- * lvalue must be size_t to avoid implicit type conversion.
- */
-static inline size_t __must_check size_add(size_t addend1, size_t addend2)
-{
-	size_t bytes;
-
-	if (check_add_overflow(addend1, addend2, &bytes))
-		return SIZE_MAX;
-
-	return bytes;
-}
-#endif
-
-#ifndef size_mul
-/**
- * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
- * @factor1: first factor
- * @factor2: second factor
- *
- * Returns: calculate @factor1 * @factor2, both promoted to size_t,
- * with any overflow causing the return value to be SIZE_MAX. The
- * lvalue must be size_t to avoid implicit type conversion.
- */
-static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
-{
-	size_t bytes;
-
-	if (check_mul_overflow(factor1, factor2, &bytes))
-		return SIZE_MAX;
-
-	return bytes;
-}
-#endif
-
 #ifndef flex_array_size
 /**
  * flex_array_size() - Calculate size of a flexible array member
@@ -624,6 +582,47 @@ static inline unsigned int can_skb_get_frame_len(const struct sk_buff *skb)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 15, 0)
 #define ndo_eth_ioctl ndo_do_ioctl
 #endif /* < v5.15.0 */
+
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 18, 0)
+/**
+ * size_add() - Calculate size_t addition with saturation at SIZE_MAX
+ * @addend1: first addend
+ * @addend2: second addend
+ *
+ * Returns: calculate @addend1 + @addend2, both promoted to size_t,
+ * with any overflow causing the return value to be SIZE_MAX. The
+ * lvalue must be size_t to avoid implicit type conversion.
+ */
+static inline size_t __must_check size_add(size_t addend1, size_t addend2)
+{
+	size_t bytes;
+
+	if (check_add_overflow(addend1, addend2, &bytes))
+		return SIZE_MAX;
+
+	return bytes;
+}
+
+/**
+ * size_mul() - Calculate size_t multiplication with saturation at SIZE_MAX
+ * @factor1: first factor
+ * @factor2: second factor
+ *
+ * Returns: calculate @factor1 * @factor2, both promoted to size_t,
+ * with any overflow causing the return value to be SIZE_MAX. The
+ * lvalue must be size_t to avoid implicit type conversion.
+ */
+static inline size_t __must_check size_mul(size_t factor1, size_t factor2)
+{
+	size_t bytes;
+
+	if (check_mul_overflow(factor1, factor2, &bytes))
+		return SIZE_MAX;
+
+	return bytes;
+}
+#endif /* < v5.18.0 */
 
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 0) && \
