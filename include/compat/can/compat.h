@@ -304,7 +304,7 @@ can_put_echo_skb_compat(struct sk_buff *skb, struct net_device *dev,
 }
 
 #define can_put_echo_skb(_skb, _dev, _idx, _len) \
-	can_put_echo_skb_compat(_skb, _dev, _idx, _len) \
+	can_put_echo_skb_compat(_skb, _dev, _idx, _len)
 
 #define __can_get_echo_skb(_dev, _idx, _len_ptr, _frame_len_ptr) \
 	__can_get_echo_skb((_dev), (_idx), (_len_ptr))
