@@ -633,7 +633,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
 			goto resubmit_urb;
 
 		cf->can_id |= CAN_ERR_CRTL;
-		cf->len = CAN_ERR_DLC;
+		cf->can_dlc = CAN_ERR_DLC;
 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
 		stats->rx_over_errors++;
 		stats->rx_errors++;
@@ -774,7 +774,7 @@ static netdev_tx_t gs_can_start_xmit(struct sk_buff *skb,
 		hf->can_id = cpu_to_le32(cf->can_id);
 		hf->can_dlc = can_get_cc_dlc(cf, dev->can.ctrlmode);
 
-		memcpy(hf->classic_can->data, cf->data, cf->len);
+		memcpy(hf->classic_can->data, cf->data, cf->can_dlc);
 	}
 
 	usb_fill_bulk_urb(urb, dev->udev,
