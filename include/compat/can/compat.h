@@ -44,6 +44,10 @@
 #define CAN_MAX_RAW_DLC 15
 #endif
 
+#ifndef CAN_TERMINATION_DISABLED
+#define CAN_TERMINATION_DISABLED 0
+#endif
+
 #ifndef can_cc_dlc2len
 #define can_cc_dlc2len(dlc) (min_t(u8, (dlc), CAN_MAX_DLEN))
 #endif
